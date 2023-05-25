@@ -1,12 +1,16 @@
 #include <iostream>
 #include <vector>
+#include "LinkedList.h"
+#include <fstream>
+#include <string>
 
 using namespace std;
 
 void print_ds_menu();
 void print_operation_menu();
-bool perform_operation(char);
-
+bool perform_operation(char, LinkedList*, LinkedList*);
+//bool perform_operation(char, BinaryTree*);    
+//bool perform_operation(char, AVLTree*);
 
 int main()
 {
@@ -44,13 +48,14 @@ int main()
 
     else if (choice_ds == '3') //Linked List Selection
     {
-        //LinkedList* ll = new LinkedList();
+        LinkedList* p_linkedlist = new LinkedList();  //for predictions
+        LinkedList* gt_linkedlist = new LinkedList();  //for ground truth
 
         while (!end)
         {
             print_operation_menu();
             cin >> choice_op;
-            // Fill here according to the choice
+            end = perform_operation(choice_op,p_linkedlist,gt_linkedlist);
         }
     }
 
@@ -84,6 +89,74 @@ void print_operation_menu()
     cout << "7: Calculate true positive variant count"<< endl;
     cout << "0: Exit" << endl;
     cout << "Enter a choice {1,2,3,4,5,6,7,0}:";
+}
+
+bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
+    bool terminate = false;
+
+    switch (choice)
+    {
+    case '1':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+    
+    case '2':
+
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+
+    case '3':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+
+    case '4':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+
+    case '5':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+
+    case '6':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+
+    case '7':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+
+    case '0':
+        terminate = true;
+        break;
+
+    default:
+        cout << "ERROR: You have entered an invalid choice" << endl << endl;
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_list, gt_list);
+        break;
+    }
+    return terminate;
 }
 
 
