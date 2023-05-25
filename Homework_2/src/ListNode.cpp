@@ -11,7 +11,11 @@ ListNode::ListNode(int chromo, int pos, char alt_base){
     this->pos = pos;
 }
 
-ListNode* ListNode::get_next(){
+ListNode::~ListNode(){
+    delete next;
+}
+
+ListNode* ListNode::get_next() const{
     return next;
 }
 
@@ -19,14 +23,14 @@ void ListNode::set_next(ListNode* a){
     next = a;
 }
 
-int ListNode::get_chromo(){
+int ListNode::get_chromo() const{
     return chromo;
 }
 
-int ListNode::get_pos(){
+int ListNode::get_pos() const{
     return pos;
 }
 
-char ListNode::get_alt_base(){
+char ListNode::get_alt_base() const{
     return alt_base;
 }

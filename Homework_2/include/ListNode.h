@@ -2,6 +2,8 @@
 Name: Ramazan Taş
 */
 
+#include<iostream>
+
 class ListNode{
 
     private:
@@ -13,9 +15,10 @@ class ListNode{
     public:
         
         ListNode(int,int,char);
-        ListNode* get_next();
+        ~ListNode();
+        ListNode* get_next() const;
         void set_next (ListNode*);
-        int get_chromo();
-        int get_pos();
-        char get_alt_base();
+        int get_chromo() const;
+        int get_pos() const;
+        char get_alt_base() const;
 };
