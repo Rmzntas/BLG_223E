@@ -111,13 +111,21 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '3':
-        
+        int in_chromo, in_pos;char in_altbase;
+        cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
+        cin>>in_chromo>>in_pos>>in_altbase;
+        p_list->add_node(in_chromo,in_pos,in_altbase);
+
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_list, gt_list);
         break;
 
     case '4':
+        int in_chromo, in_pos;char in_altbase;
+        cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
+        cin>>in_chromo>>in_pos>>in_altbase;
+        p_list->delete_node(in_chromo,in_pos,in_altbase);
         
         print_operation_menu();
         cin >> choice;
@@ -125,6 +133,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '5':
+        p_list->list();
         
         print_operation_menu();
         cin >> choice;
@@ -132,6 +141,10 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '6':
+        int in_chromo, in_pos;char in_altbase;
+        cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
+        cin>>in_chromo>>in_pos>>in_altbase;
+        p_list->finding(in_chromo,in_pos,in_altbase);
         
         print_operation_menu();
         cin >> choice;
@@ -139,7 +152,8 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '7':
-        
+        p_list->true_counter(gt_list);
+
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_list, gt_list);
