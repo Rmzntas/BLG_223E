@@ -20,6 +20,14 @@ void LinkedList::set_head(ListNode* a){
 }
 
 void LinkedList::add_node(int chromo, int pos, char alt_base){
+    ListNode* new_node = new ListNode(chromo,pos,alt_base);
+    ListNode* temp = head;
+
+    while(temp->get_next() != nullptr){
+        temp = temp->get_next();
+    }
+    temp->set_next(new_node);
+    std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was added."<<std::endl;  // chrono
 
 }
 
