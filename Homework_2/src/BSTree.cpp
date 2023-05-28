@@ -76,8 +76,18 @@ void BSTree::delete_node(int chromo, int pos, char alt_base){
 
 }
 
-void BSTree::list() const{
-    
+void BSTree::list(BSTNode* root,BSTNode* last) const{  // inorder -> left - root - right
+    if(root == nullptr){
+        return; 
+    }
+    list(root->get_leftchild(),last);
+    if(root == last){
+            std::cout<<root->get_chromo()<<" "<<root->get_pos()<<" "<<root->get_alt_base()<<std::endl;
+    }
+    else{
+        std::cout<<root->get_chromo()<<" "<<root->get_pos()<<" "<<root->get_alt_base()<<",";
+    }
+    list(root->get_rightchild(),last);
 }
 
 void BSTree::finding(int chromo, int pos, char alt_base) const{
