@@ -72,8 +72,170 @@ void BSTree::add_node(int chromo, int pos, char alt_base){
 
 }
 
-void BSTree::delete_node(int chromo, int pos, char alt_base){
+BSTNode* BSTree::finding_node_to_deleting(int chromo, int pos, char alt_base, bool& flag){
+    BSTNode* temp = root;
+    flag = false;
 
+    while(true){
+        if(chromo < temp->get_chromo()){
+            if(temp->get_leftchild() == nullptr){
+               flag = false;
+               return nullptr; 
+               break;       
+            }
+            temp = temp->get_leftchild();
+        }
+        else if(chromo > temp->get_chromo()){
+            if(temp->get_rightchild() == nullptr){
+                flag = false;
+                return nullptr; 
+                break; 
+            }
+            temp = temp->get_rightchild();
+        }
+        else{   //chromo == temp.chromo
+            if(pos < temp->get_pos()){
+                if(temp->get_leftchild() == nullptr){
+                    flag = false;
+                    return nullptr; 
+                    break;       
+                }
+                temp = temp->get_leftchild();
+            }
+            else if( pos > temp->get_pos()){
+                if(temp->get_rightchild() == nullptr){
+                    flag = false;
+                    return nullptr; 
+                    break; 
+                }
+                temp = temp->get_rightchild();
+            }
+            else{   //pos == temp.pos
+                if(alt_base == temp->get_alt_base()){
+                    flag = true;
+                    return temp;
+                    break;
+                }
+                else{   //chromo == chromo , pos == pos, altbase != alt_base
+                    flag = false;
+                    return nullptr;
+                    break;     
+                }
+            }
+        }
+    }
+}
+
+void BSTree::delete_node(int chromo, int pos, char alt_base){
+    bool find_flag = false;
+    BSTNode* temp = finding_node_to_deleting(chromo, pos, alt_base,find_flag);
+    
+    if(! find_flag ){ //could not found
+       std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be deleted because it could not be found"<<std::endl; 
+    }
+    else if(temp == root){  //found and it is root
+
+    }
+    else{   //was found
+        //case 1 : there is no child
+        //case 2 : there is 1 child
+        //case 3 : there are 2 children
+
+        //case 1
+        if( temp->get_leftchild() == nullptr && temp->get_rightchild() == nullptr ){
+            BSTNode* temp_parent = temp->get_parent();
+            if (temp_parent->get_rightchild()->get_chromo()== temp->get_chromo() && temp_parent->get_rightchild()->get_pos() == temp->get_pos() && temp_parent->get_rightchild()->get_alt_base() == temp->get_alt_base()){
+                temp_parent->set_rightchild(nullptr);
+            }
+            else{
+                temp_parent->set_leftchild(nullptr);
+            }
+            delete temp;
+        }
+
+        //case 2
+        else if ( temp->get_leftchild() == nullptr || temp->get_rightchild() == nullptr ){
+            BSTNode* temp_parent = temp->get_parent();
+
+            if (temp_parent->get_rightchild() == temp){
+                if(temp->get_leftchild()==nullptr){
+                    temp_parent->set_rightchild(temp->get_rightchild());
+                    temp->get_rightchild()->set_parent(temp_parent);
+                    temp->set_rightchild(nullptr);
+                }
+                else{
+                    temp_parent->set_rightchild(temp->get_leftchild());
+                    temp->get_leftchild()->set_parent(temp_parent);
+                    temp->set_leftchild(nullptr);
+                }
+            }
+            else{
+                if(temp->get_leftchild()==nullptr){
+                    temp_parent->set_leftchild(temp->get_rightchild());
+                    temp->get_rightchild()->set_parent(temp_parent);
+                    temp->set_rightchild(nullptr);
+                }
+                else{
+                    temp_parent->set_leftchild(temp->get_leftchild());
+                    temp->get_leftchild()->set_parent(temp_parent);
+                    temp->set_leftchild(nullptr);
+                }
+            }
+            delete temp;
+        }
+
+        //case 3
+        else{
+            // find min value of right tree and replace with deleted node
+            BSTNode* min = temp;
+            BSTNode* temp_parent = temp->get_parent();
+            
+            min = min->get_rightchild();
+            
+            if(min->get_leftchild() == nullptr){ //min = temp.rightchild
+                if(temp->get_parent()->get_leftchild() == temp){    //temp is leftchild
+                    temp->get_parent()->set_leftchild(min);
+                }
+                else{   //temp is rightchild
+                    temp->get_parent()->set_rightchild(min);
+                }
+                min->set_parent(temp->get_parent());
+                min->set_leftchild(temp->get_leftchild());
+                temp->get_leftchild()->set_parent(min);
+                //connected
+                
+                temp->set_leftchild(nullptr);
+                temp->set_rightchild(nullptr);
+                temp->set_parent(nullptr);
+                delete temp;
+            }
+            else{ //min.left != nullptr
+                while(min->get_leftchild() == nullptr){
+                    min = min->get_leftchild();
+                }
+                if(temp->get_parent()->get_leftchild() == temp){    //if temp leftchild
+                    temp->get_parent()->set_leftchild(min);
+                }
+                else{   //if temp rightchild
+                    temp->get_parent()->set_rightchild(min);
+                }
+                min->get_parent()->set_leftchild(min->get_rightchild());
+                if(min->get_rightchild() != nullptr){
+                    min->get_rightchild()->set_parent(min->get_parent());
+                }
+                min->set_parent(temp->get_parent());
+                min->set_leftchild(temp->get_leftchild());
+                temp->get_leftchild()->set_parent(min);
+                min->set_rightchild(temp->get_rightchild());
+                temp->get_rightchild()->set_parent(min);    
+
+                temp->set_leftchild(nullptr);
+                temp->set_rightchild(nullptr);
+                temp->set_parent(nullptr);
+                delete temp; 
+            }
+        }
+    }
 }
 
 void BSTree::list(BSTNode* root,BSTNode* last) const{  // inorder -> left - root - right

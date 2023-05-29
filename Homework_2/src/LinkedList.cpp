@@ -47,8 +47,10 @@ void LinkedList::delete_node(int chromo, int pos, char alt_base){
         //if next element of temp is the node
         while(temp->get_next() != nullptr){  //until last node
             if(temp->get_next()->get_chromo() == chromo && temp->get_next()->get_pos() == pos && temp->get_next()->get_alt_base() == alt_base){
-                temp->set_next(temp->get_next()->get_next());
-                delete temp->get_next();
+                ListNode* temp2 = temp->get_next();
+                temp->set_next(temp2->get_next());
+                temp2->set_next(nullptr);
+                delete temp2;
                 del_flag = false;
                 std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted"<<std::endl;  // chrono
                 break;       
