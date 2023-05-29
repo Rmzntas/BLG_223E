@@ -129,13 +129,46 @@ void BSTree::finding(int chromo, int pos, char alt_base) const{
                     break;
                 }
                 else{   //chromo == chromo , pos == pos, altbase != alt_base
-                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl;        
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl;
+                    break;     
                 }
             }
         }
     }
 }
 
-void BSTree::true_counter(BSTree* second) const{
+void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line>& vec){
+    if(root == nullptr){
+        return;
+    }
+    convert_to_vector(root->get_leftchild(),vec);
+    line data;
+    data.chromo = root->get_chromo();
+    data.pos = root->get_pos();
+    data.alt_base = root->get_alt_base();
+    vec.push_back(data);
+    convert_to_vector(root->get_rightchild(),vec);
+}
+
+void BSTree::true_counter(BSTree* gt) {
+
+    int counter{};
+
+    std:: vector <line> first,second;
+    
+    convert_to_vector(this->root, first);
+    convert_to_vector(gt->get_root(), second);
+
+    for (const auto& data1 : first) {
+        for (const auto& data2 : second) {
+            if (data1.chromo == data2.chromo && data1.pos == data2.pos && data1.alt_base == data2.alt_base) {
+                counter++;
+                break;
+            }
+        }
+    }
+
+    std::cout<<"True positive variant count is "<<counter<<"."<<std::endl;
+
 
 }
