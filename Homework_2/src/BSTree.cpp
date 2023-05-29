@@ -134,7 +134,64 @@ void BSTree::delete_node(int chromo, int pos, char alt_base){
        std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be deleted because it could not be found"<<std::endl; 
     }
     else if(temp == root){  //found and it is root
+        //case 1 : there is no child
+        //case 2 : there is 1 child
+        //case 3 : there are 2 children
+        
+        //case 1
+        if(temp->get_leftchild() == nullptr && temp->get_rightchild() == nullptr ){
+            root = nullptr;
+            delete temp;
+        }
+        
+        //case 2
+        else if( temp->get_leftchild() == nullptr || temp->get_rightchild() == nullptr ){
+            if (temp->get_leftchild() == nullptr){
+                root = temp->get_rightchild();
+                temp->set_rightchild(nullptr);
+            }
+            else{   //temp has leftchild
+                root = temp->get_leftchild();
+                temp->set_leftchild(nullptr);
+            }
+            delete temp;
+        }
 
+        //case 3
+        else{
+            BSTNode* min = temp;
+
+            min = min->get_rightchild();
+
+            if( min->get_leftchild() == nullptr){
+                root = min;
+                min->set_leftchild(temp->get_leftchild());
+                temp->get_leftchild()->set_parent(min);
+
+                temp->set_leftchild(nullptr);
+                temp->set_rightchild(nullptr);
+                delete temp;
+            }
+            else{   // min != temp.rightchild
+                while(min->get_leftchild()== nullptr){
+                    min = min->get_leftchild();
+                }
+                root = min;
+                min->set_leftchild(temp->get_leftchild());
+                temp->get_leftchild()->set_parent(min);
+                min->get_parent()->set_leftchild(min->get_rightchild());
+                if(min->get_rightchild() != nullptr){
+                    min->get_rightchild()->set_parent(min->get_parent());
+                }
+                min->set_rightchild(temp->get_rightchild());
+                temp->get_rightchild()->set_parent(min);
+                min->set_parent(nullptr);
+
+                temp->set_leftchild(nullptr);
+                temp->set_rightchild(nullptr);
+                delete temp;
+            }
+        }
     }
     else{   //was found
         //case 1 : there is no child
