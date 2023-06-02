@@ -24,3 +24,13 @@ int AVLNode::get_pos(){
 char AVLNode::get_alt_base(){
     return alt_base;
 }
+
+void AVLNode::set_chromo(int a){
+    chromo = a;
+}
+void AVLNode::set_pos(int a){
+    pos = a;
+}
+void AVLNode::set_alt_base(char a){
+    alt_base = a;
+}

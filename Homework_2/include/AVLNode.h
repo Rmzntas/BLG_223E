@@ -15,6 +15,9 @@ class AVLNode{
         int get_chromo();
         int get_pos();
         char get_alt_base();
+        void set_chromo(int);
+        void set_pos(int);
+        void set_alt_base(char);
         
         AVLNode* left {nullptr};
         AVLNode* right {nullptr};
