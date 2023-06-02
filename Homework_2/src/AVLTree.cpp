@@ -1,8 +1,19 @@
 /* @Author
 Name: Ramazan Taş
 */
-
+#include<iostream>
 #include "AVLTree.h"
+
+AVLTree::AVLTree(){
+}
+
+AVLTree::~AVLTree(){
+    delete root;
+}
+
+AVLNode* AVLTree::get_root(){
+    return root;
+}
 
 int AVLTree::cal_height(AVLNode* node){
     if(node == nullptr){
@@ -130,24 +141,31 @@ void AVLTree::delete_node(AVLNode*& root, int chromo, int pos, char alt_base, bo
         else if (pos > root->get_pos())
             delete_node(root->right, chromo, pos, alt_base, is_deleted);
         else if (alt_base == root->get_alt_base()) {
-            if ((root->left == nullptr) || (root->right == nullptr)) {
-                AVLNode* temp = root->left ? root->left : root->right;
-                if (temp == nullptr) {
-                    temp = root;
-                    root = nullptr;
-                }
-                else
-                    *root = *temp;
+             if (root->left == NULL && root->right == NULL) {
+                delete root;
+                root = NULL;
+                is_deleted = true;
+            }
+            else if (root->left == NULL) {
+                AVLNode* temp = root->right;
+                *root = *temp;
                 delete temp;
+                is_deleted = true;
+            }
+            else if (root->right == NULL) {
+                AVLNode* temp = root->left;
+                *root = *temp;
+                delete temp;
+                is_deleted = true;
             }
             else {
                 AVLNode* temp = node_minimum(root->right);
+                
                 root->set_chromo(temp->get_chromo());
                 root->set_pos(temp->get_pos());
                 root->set_alt_base(temp->get_alt_base());
                 delete_node(root->right, temp->get_chromo(), temp->get_pos(), temp->get_alt_base(), is_deleted);
             }
-            is_deleted = true; // Silme işlemi gerçekleştiğinde bayrak değeri true olarak ayarlanır
         }
     }
 
@@ -176,4 +194,99 @@ void AVLTree::delete_node(AVLNode*& root, int chromo, int pos, char alt_base, bo
             left_rotate(root);
         }
     }
+}
+
+void AVLTree::list(AVLNode* root,AVLNode* last) const{  // inorder -> left - root - right
+    if(root == nullptr){
+        return; 
+    }
+    list(root->left,last);
+    if(root == last){
+            std::cout<<root->get_chromo()<<" "<<root->get_pos()<<" "<<root->get_alt_base()<<std::endl;
+    }
+    else{
+        std::cout<<root->get_chromo()<<" "<<root->get_pos()<<" "<<root->get_alt_base()<<",";
+    }
+    list(root->right,last);
+}
+
+void AVLTree::find_node(int chromo, int pos, char alt_base) const{
+    AVLNode* temp = root;
+
+    while(true){
+        if(chromo < temp->get_chromo()){
+            if(temp->left == nullptr){
+               std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl; 
+               break;       
+            }
+            temp = temp->left;
+        }
+        else if(chromo > temp->get_chromo()){
+            if(temp->right == nullptr){
+                std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl; 
+                break; 
+            }
+            temp = temp->right;
+        }
+        else{   //chromo == temp.chromo
+            if(pos < temp->get_pos()){
+                if(temp->left == nullptr){
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl; 
+                    break;       
+                }
+                temp = temp->left;
+            }
+            else if( pos > temp->get_pos()){
+                if(temp->right == nullptr){
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl; 
+                    break; 
+                }
+                temp = temp->right;
+            }
+            else{   //pos == temp.pos
+                if(alt_base == temp->get_alt_base()){
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found"<<std::endl;
+                    break;
+                }
+                else{   //chromo == chromo , pos == pos, altbase != alt_base
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be found"<<std::endl;
+                    break;     
+                }
+            }
+        }
+    }
+}
+
+void AVLTree::convert_to_vector(AVLNode* root, std::vector<struct line>& vec){
+    if(root == nullptr){
+        return;
+    }
+    convert_to_vector(root->left,vec);
+    line data;
+    data.chromo = root->get_chromo();
+    data.pos = root->get_pos();
+    data.alt_base = root->get_alt_base();
+    vec.push_back(data);
+    convert_to_vector(root->right,vec);
+}
+
+void AVLTree::true_counter(AVLTree* gt) {
+
+    int counter{};
+
+    std:: vector <line> first,second;
+    
+    convert_to_vector(this->root, first);
+    convert_to_vector(gt->get_root(), second);
+
+    for (const auto& data1 : first) {
+        for (const auto& data2 : second) {
+            if (data1.chromo == data2.chromo && data1.pos == data2.pos && data1.alt_base == data2.alt_base) {
+                counter++;
+                break;
+            }
+        }
+    }
+
+    std::cout<<"True positive variant count is "<<counter<<"."<<std::endl;
 }
