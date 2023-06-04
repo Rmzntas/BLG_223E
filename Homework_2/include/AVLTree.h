@@ -25,10 +25,12 @@ class AVLTree{
         int get_balance(AVLNode*);
         int cal_height(AVLNode*);
         int maximum(int,int);
+        void insert_node(AVLNode*&, int, int, char);
 
 
-        void insert_node(AVLNode*&, int, int, char);                  //3
-        void delete_node(AVLNode*&, int, int, char, bool&);           //4
+        void add_node(int, int, char);                                //3
+        void delete_node(AVLNode*&, int, int, char, bool&);        
+        void delete_node_main(int, int, char);                        //4
         void list(AVLNode*,AVLNode*) const;                           //5
         void find_node(int, int, char) const;                         //6
         void convert_to_vector(AVLNode*, std::vector<struct line>&);

@@ -3,6 +3,7 @@ Name: Ramazan Taş
 */
 #include<iostream>
 #include "AVLTree.h"
+#include <chrono>
 
 AVLTree::AVLTree(){
 }
@@ -118,6 +119,18 @@ void AVLTree::insert_node(AVLNode*& node, int chromo, int pos, char alt_base) {
     }
 }
 
+void AVLTree::add_node(int chromo, int pos, char alt_base) {
+    // Find the correct position and insert the node
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
+    insert_node(root,chromo,pos,alt_base);
+
+    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was added in " <<duration.count()<<" ms"<<std::endl; 
+
+}
+
 // Node with minimum value
 AVLNode* AVLTree::node_minimum(AVLNode* node) {
     AVLNode* current = node;
@@ -128,7 +141,9 @@ AVLNode* AVLTree::node_minimum(AVLNode* node) {
 
 // Delete a node
 void AVLTree::delete_node(AVLNode*& root, int chromo, int pos, char alt_base, bool& is_deleted) {
+    
     // Find the node and delete it
+    
     if (root == nullptr)
         return;
     if (chromo < root->get_chromo())
@@ -196,6 +211,23 @@ void AVLTree::delete_node(AVLNode*& root, int chromo, int pos, char alt_base, bo
     }
 }
 
+void AVLTree::delete_node_main(int chromo, int pos, char alt_base){
+
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+    bool del_flag = false;
+
+    delete_node(root, chromo, pos, alt_base, del_flag);
+
+    if(del_flag){   
+        auto end_time = std::chrono::high_resolution_clock::now();  //end time
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted in " <<duration.count()<<" ms"<<std::endl; 
+    }
+    else{
+       std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" could not be deleted because it could not be found"<<std::endl; 
+    }
+}
+
 void AVLTree::list(AVLNode* root,AVLNode* last) const{  // inorder -> left - root - right
     if(root == nullptr){
         return; 
@@ -211,6 +243,8 @@ void AVLTree::list(AVLNode* root,AVLNode* last) const{  // inorder -> left - roo
 }
 
 void AVLTree::find_node(int chromo, int pos, char alt_base) const{
+        
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
     AVLNode* temp = root;
 
     while(true){
@@ -245,7 +279,9 @@ void AVLTree::find_node(int chromo, int pos, char alt_base) const{
             }
             else{   //pos == temp.pos
                 if(alt_base == temp->get_alt_base()){
-                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found"<<std::endl;
+                    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found in "<<duration.count()<<" ms"<<std::endl;
                     break;
                 }
                 else{   //chromo == chromo , pos == pos, altbase != alt_base
@@ -272,6 +308,7 @@ void AVLTree::convert_to_vector(AVLNode* root, std::vector<struct line>& vec){
 
 void AVLTree::true_counter(AVLTree* gt) {
 
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
     int counter{};
 
     std:: vector <line> first,second;
@@ -287,6 +324,7 @@ void AVLTree::true_counter(AVLTree* gt) {
             }
         }
     }
-
-    std::cout<<"True positive variant count is "<<counter<<"."<<std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    std::cout<<"True positive variant count is "<<counter<<". It took "<<duration.count()<<" ms to calculate"<<std::endl;
 }
