@@ -21,6 +21,7 @@ class BSTree{
         ~BSTree();
         BSTNode* get_root();
         void set_root(BSTNode*);
+        void insert_node(int, int, char);
         void add_node(int, int, char);          //3
         BSTNode* finding_node_to_deleting(int,int,char,bool&);
         void delete_node(int, int, char);       //4

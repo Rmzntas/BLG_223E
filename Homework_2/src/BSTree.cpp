@@ -3,6 +3,7 @@ Name: Ramazan Taş
 */
 
 #include"BSTree.h"
+#include <chrono>
 
 BSTree::~BSTree(){
     delete root;
@@ -16,7 +17,7 @@ void BSTree::set_root(BSTNode* a){
     root = a;
 }
 
-void BSTree::add_node(int chromo, int pos, char alt_base){
+void BSTree::insert_node(int chromo, int pos, char alt_base){
 
     BSTNode* new_node = new BSTNode(chromo,pos,alt_base);
 
@@ -69,6 +70,67 @@ void BSTree::add_node(int chromo, int pos, char alt_base){
             }
         }
     }
+
+}
+
+void BSTree::add_node(int chromo, int pos, char alt_base){
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
+
+    BSTNode* new_node = new BSTNode(chromo,pos,alt_base);
+
+    if(root ==nullptr){     //if tree is empty
+        root = new_node;
+    }
+    else{
+        BSTNode* temp = root;
+
+        while(true){
+            if(new_node->get_chromo() < temp->get_chromo()){
+                if(temp->get_leftchild() == nullptr){
+                    temp->set_leftchild(new_node);
+                    new_node->set_parent(temp);
+                    break;
+                }
+                else{
+                    temp->get_leftchild();
+                }
+            }
+            else if(new_node->get_chromo() > temp->get_chromo()){
+                if(temp->get_rightchild() == nullptr){
+                    temp->set_rightchild(new_node);
+                    new_node->set_parent(temp);
+                    break;
+                }
+                else{
+                    temp = temp->get_rightchild();
+                }
+            }
+            else{  //chromos are equal
+                if(new_node->get_pos() < temp->get_pos()){
+                    if(temp->get_leftchild() == nullptr){
+                        temp->set_leftchild(new_node);
+                        new_node->set_parent(temp);
+                        break;
+                    }
+                }
+                else if(new_node->get_pos() > temp->get_pos()){
+                    if(temp->get_rightchild() == nullptr){
+                        temp->set_rightchild(new_node);
+                        new_node->set_parent(temp);
+                        break;
+                    }
+                    else{
+                        temp = temp->get_rightchild();
+                    }
+                }
+                else{}//chromo and pos are equal -> X
+            }
+        }
+    }
+    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was added in " <<duration.count()<<" ms"<<std::endl;  
 
 }
 
@@ -127,6 +189,9 @@ BSTNode* BSTree::finding_node_to_deleting(int chromo, int pos, char alt_base, bo
 }
 
 void BSTree::delete_node(int chromo, int pos, char alt_base){
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
+
     bool find_flag = false;
     BSTNode* temp = finding_node_to_deleting(chromo, pos, alt_base,find_flag);
     
@@ -293,6 +358,11 @@ void BSTree::delete_node(int chromo, int pos, char alt_base){
             }
         }
     }
+    if(find_flag){
+        auto end_time = std::chrono::high_resolution_clock::now();  //end time
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted in " <<duration.count()<<" ms"<<std::endl; 
+    }
 }
 
 void BSTree::list(BSTNode* root,BSTNode* last) const{  // inorder -> left - root - right
@@ -310,6 +380,9 @@ void BSTree::list(BSTNode* root,BSTNode* last) const{  // inorder -> left - root
 }
 
 void BSTree::finding(int chromo, int pos, char alt_base) const{
+    
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
     BSTNode* temp = root;
 
     while(true){
@@ -344,7 +417,9 @@ void BSTree::finding(int chromo, int pos, char alt_base) const{
             }
             else{   //pos == temp.pos
                 if(alt_base == temp->get_alt_base()){
-                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found"<<std::endl;
+                    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+                    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+                    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found in "<<duration.count()<<" ms"<<std::endl;
                     break;
                 }
                 else{   //chromo == chromo , pos == pos, altbase != alt_base
@@ -371,6 +446,7 @@ void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line>& vec){
 
 void BSTree::true_counter(BSTree* gt) {
 
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
     int counter{};
 
     std:: vector <line> first,second;
@@ -386,8 +462,9 @@ void BSTree::true_counter(BSTree* gt) {
             }
         }
     }
-
-    std::cout<<"True positive variant count is "<<counter<<"."<<std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+    std::cout<<"True positive variant count is "<<counter<<". It took "<<duration.count()<<" ms to calculate"<<std::endl;
 
 
 }
