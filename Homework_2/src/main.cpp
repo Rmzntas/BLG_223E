@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include "LinkedList.h"
+#include "AVLTree.h"
+#include "BSTree.h"
 #include <fstream>
 #include <string>
 
@@ -9,8 +11,8 @@ using namespace std;
 void print_ds_menu();
 void print_operation_menu();
 bool perform_operation(char, LinkedList*, LinkedList*);
-//bool perform_operation(char, BinaryTree*);    
-//bool perform_operation(char, AVLTree*);
+bool perform_operation(char, BSTree*, BSTree*);  
+bool perform_operation(char, AVLTree*, AVLTree*);
 
 int main()
 {
@@ -24,25 +26,27 @@ int main()
 
     if (choice_ds == '1') //Binary Search Tree Selection
     {
-        //BinSTree* bst = new BinSTree();
+        BSTree* p_bst = new BSTree();           //for predictions
+        BSTree* gt_bst = new BSTree();          //for ground truth
 
         while (!end)
         {
             print_operation_menu();
             cin >> choice_op;
-            // Fill here according to the choice
+            end = perform_operation(choice_op,p_bst,gt_bst);
         }
     }
 
     else if (choice_ds == '2') //AVL Tree Selection
     {
-        //AVLTree* avt = new AVLTree();
+        AVLTree* p_avltree = new AVLTree();         //for predictions
+        AVLTree* gt_avltree = new AVLTree();        //for ground truth
 
         while (!end)
         {
             print_operation_menu();
             cin >> choice_op;
-            // Fill here according to the choice
+            end = perform_operation(choice_op,p_avltree,gt_avltree);
         }
     }
 
@@ -173,4 +177,89 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
     return terminate;
 }
 
+bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
+    bool terminate = false;
 
+    switch (choice)
+    {
+    case '1':
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+    
+    case '2':
+
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+
+    case '3':
+        int in_chromo, in_pos;char in_altbase;
+        cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
+        cin>>in_chromo>>in_pos>>in_altbase;
+        p_bst->add_node(in_chromo,in_pos,in_altbase);
+
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+
+    case '4':
+        int in_chromo, in_pos;char in_altbase;
+        cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
+        cin>>in_chromo>>in_pos>>in_altbase;
+        //p_bst->delete_node(in_chromo,in_pos,in_altbase);
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+
+    case '5':
+        BSTNode* temp = p_bst->get_root();
+        while(temp->get_rightchild() != nullptr){
+            temp = temp->get_rightchild();
+        }
+        p_bst->list(p_bst->get_root(),temp);
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+
+    case '6':
+        int in_chromo, in_pos;char in_altbase;
+        cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
+        cin>>in_chromo>>in_pos>>in_altbase;
+        p_bst->finding(in_chromo,in_pos,in_altbase);
+        
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+
+    case '7':
+        
+        p_bst->true_counter(gt_bst);
+
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+
+    case '0':
+        terminate = true;
+        break;
+
+    default:
+        cout << "ERROR: You have entered an invalid choice" << endl << endl;
+        print_operation_menu();
+        cin >> choice;
+        terminate = perform_operation(choice, p_bst, gt_bst);
+        break;
+    }
+    return terminate;
+}
