@@ -6,6 +6,7 @@ Name: Ramazan Taş
 
 #include"LinkedList.h"
 #include<vector>
+#include <chrono>
 
 LinkedList::~LinkedList(){ // delete head and it will delete all linked list beacuse of destructor of Listnode will delete next
     delete head;
@@ -20,6 +21,8 @@ void LinkedList::set_head(ListNode* a){
 }
 
 void LinkedList::add_node(int chromo, int pos, char alt_base){
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
     ListNode* new_node = new ListNode(chromo,pos,alt_base);
     ListNode* temp = head;
 
@@ -27,21 +30,31 @@ void LinkedList::add_node(int chromo, int pos, char alt_base){
         temp = temp->get_next();
     }
     temp->set_next(new_node);
-    std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was added."<<std::endl;  // chrono
+
+    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+
+    std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was added in " <<duration.count()<<" ms"<<std::endl;  // chrono
 
 }
 
 void LinkedList::delete_node(int chromo, int pos, char alt_base){
+
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
+
     ListNode* temp = this->head;
     bool del_flag = true;
 
     //if head, delete
     if (temp->get_chromo() == chromo && temp->get_pos() == pos && temp->get_alt_base() == alt_base){
         head = head->get_next();
+        temp->set_next(nullptr);
         delete temp;
         del_flag = false;
-        std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted"<<std::endl;  // chrono
-
+        auto end_time = std::chrono::high_resolution_clock::now();  //end time
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted in " <<duration.count()<<" ms"<<std::endl;  
     }
     else{
         //if next element of temp is the node
@@ -52,7 +65,9 @@ void LinkedList::delete_node(int chromo, int pos, char alt_base){
                 temp2->set_next(nullptr);
                 delete temp2;
                 del_flag = false;
-                std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted"<<std::endl;  // chrono
+                auto end_time = std::chrono::high_resolution_clock::now();  //end time
+                auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+                std::cout<<chromo<<" "<<pos<<" "<<alt_base<< " was deleted in " <<duration.count()<<" ms"<<std::endl;  
                 break;       
             }
             else{
@@ -81,12 +96,17 @@ void LinkedList::list() const{
 }
 
 void LinkedList::finding(int chromo, int pos, char alt_base) const{
+
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
     ListNode* temp = head;
     bool find_flag = true;
 
     while(temp != nullptr){
         if (temp->get_chromo() == chromo && temp->get_pos() == pos && temp->get_alt_base() == alt_base){
-            std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found"<<std::endl;
+            auto end_time = std::chrono::high_resolution_clock::now();  //end time
+            auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+            std::cout<<chromo<<" "<<pos<<" "<<alt_base<<" was found in "<<duration.count()<<" ms"<<std::endl;
             find_flag = false;
             break;
         }
@@ -101,6 +121,9 @@ void LinkedList::finding(int chromo, int pos, char alt_base) const{
 }
 
 void LinkedList::true_counter(LinkedList* gt) const{
+    auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+
+
     struct line
     {
         int chromo,pos;
@@ -139,7 +162,9 @@ void LinkedList::true_counter(LinkedList* gt) const{
             }
         }
     }
-
-    std::cout<<"True positive variant count is "<<counter<<"."<<std::endl;
+    auto end_time = std::chrono::high_resolution_clock::now();  //end time
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+            
+    std::cout<<"True positive variant count is "<<counter<<". It took "<<duration.count()<<" ms to calculate"<<std::endl;
     
 }
