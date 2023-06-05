@@ -28,7 +28,7 @@ int AVLTree::maximum(int a, int b){
     else return b;
 }
 
-void AVLTree::right_rotate(AVLNode*& y) {
+void AVLTree::right_rotate(AVLNode* y) {
     AVLNode* x = y->left;
     AVLNode* T2 = x->right;
     x->right = y;
@@ -38,7 +38,7 @@ void AVLTree::right_rotate(AVLNode*& y) {
     y = x;
 }
 
-void AVLTree::left_rotate(AVLNode*& x) {
+void AVLTree::left_rotate(AVLNode* x) {
     AVLNode* y = x->right;
     AVLNode* T2 = y->left;
     y->left = x;
@@ -61,7 +61,7 @@ AVLNode* AVLTree::new_node(int chromo, int pos, char alt_base ) {
 }
 
 // Insert a node
-void AVLTree::insert_node(AVLNode*& node, int chromo, int pos, char alt_base) {
+void AVLTree::insert_node(AVLNode* node, int chromo, int pos, char alt_base) {
     // Find the correct position and insert the node
     if (node == nullptr) {
         node = new_node(chromo,pos,alt_base);
@@ -140,7 +140,7 @@ AVLNode* AVLTree::node_minimum(AVLNode* node) {
 }
 
 // Delete a node
-void AVLTree::delete_node(AVLNode*& root, int chromo, int pos, char alt_base, bool& is_deleted) {
+void AVLTree::delete_node(AVLNode* root, int chromo, int pos, char alt_base, bool& is_deleted) {
     
     // Find the node and delete it
     
