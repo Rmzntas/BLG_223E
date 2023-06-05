@@ -5,6 +5,10 @@ Name: Ramazan Taş
 #include"BSTree.h"
 #include <chrono>
 
+BSTree::BSTree(){
+
+}
+
 BSTree::~BSTree(){
     delete root;
 }
@@ -431,12 +435,12 @@ void BSTree::finding(int chromo, int pos, char alt_base) const{
     }
 }
 
-void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line>& vec){
+void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>& vec){
     if(root == nullptr){
         return;
     }
     convert_to_vector(root->get_leftchild(),vec);
-    line data;
+    line_bst data;
     data.chromo = root->get_chromo();
     data.pos = root->get_pos();
     data.alt_base = root->get_alt_base();
@@ -449,7 +453,7 @@ void BSTree::true_counter(BSTree* gt) {
     auto start_time = std::chrono::high_resolution_clock::now(); //starting time
     int counter{};
 
-    std:: vector <line> first,second;
+    std:: vector <line_bst> first,second;
     
     convert_to_vector(this->root, first);
     convert_to_vector(gt->get_root(), second);

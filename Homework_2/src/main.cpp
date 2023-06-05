@@ -104,12 +104,17 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
     bool terminate = false;
     ifstream file;
     string line;
+    int chromo, pos;
+    char alt_base;
+    int in_chromo, in_pos;char in_altbase;
+    chrono::_V2::system_clock::time_point start_time,end_time;
+    chrono::milliseconds duration;
 
     switch (choice)
     {
     case '1':
 
-        auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_gt);
         if (file.is_open()) {
@@ -119,8 +124,6 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
 
         while (getline(file, line)) {
             istringstream iss(line);
-            int chromo, pos;
-            char alt_base;
 
             if (iss >> chromo >> pos >> alt_base) {
                 temp = new ListNode(chromo,pos,alt_base);
@@ -130,8 +133,8 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         }
 
         file.close();
-        auto end_time = std::chrono::high_resolution_clock::now();  //end time
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
         cout<<"Ground truth data structure was created from file in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
@@ -146,7 +149,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
     
     case '2':
 
-        auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_predict);
         if (file.is_open()) {
@@ -156,9 +159,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
 
         while (getline(file, line)) {
             istringstream iss(line);
-            int chromo, pos;
-            char alt_base;
-
+        
             if (iss >> chromo >> pos >> alt_base) {
                 temp = new ListNode(chromo,pos,alt_base);
                 temp = temp->get_next();    
@@ -167,8 +168,8 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         }
 
         file.close();
-        auto end_time = std::chrono::high_resolution_clock::now();  //end time
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
         cout<<"Prediction data structure was created in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
@@ -182,7 +183,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '3':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_list->add_node(in_chromo,in_pos,in_altbase);
@@ -193,7 +194,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '4':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_list->delete_node(in_chromo,in_pos,in_altbase);
@@ -212,7 +213,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '6':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_list->finding(in_chromo,in_pos,in_altbase);
@@ -248,12 +249,19 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
     bool terminate = false;
     ifstream file;
     string line;
+    int chromo, pos;
+    char alt_base;
+    int in_chromo, in_pos;char in_altbase;
+    chrono::_V2::system_clock::time_point start_time,end_time;
+    chrono::milliseconds duration;
+    BSTNode* temp_bst = p_bst->get_root();
+
 
     switch (choice)
     {
     case '1':
 
-        auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_gt);
         if (file.is_open()) {
@@ -261,8 +269,7 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
 
         while (getline(file, line)) {
             istringstream iss(line);
-            int chromo, pos;
-            char alt_base;
+           
 
             if (iss >> chromo >> pos >> alt_base) {
                 // Verileri kullan
@@ -272,8 +279,8 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         }
 
         file.close();
-        auto end_time = std::chrono::high_resolution_clock::now();  //end time
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
         cout<<"Ground truth data structure was created from file in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
@@ -288,7 +295,7 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
     
     case '2':
 
-        auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_predict);
         if (file.is_open()) {
@@ -296,8 +303,6 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
 
         while (getline(file, line)) {
             istringstream iss(line);
-            int chromo, pos;
-            char alt_base;
 
             if (iss >> chromo >> pos >> alt_base) {
                 // Verileri kullan
@@ -307,8 +312,8 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         }
 
         file.close();
-        auto end_time = std::chrono::high_resolution_clock::now();  //end time
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
         cout<<"Prediction data structure was created in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
@@ -322,7 +327,7 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         break;
 
     case '3':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_bst->add_node(in_chromo,in_pos,in_altbase);
@@ -333,7 +338,7 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         break;
 
     case '4':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_bst->delete_node(in_chromo,in_pos,in_altbase);
@@ -344,11 +349,10 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         break;
 
     case '5':
-        BSTNode* temp = p_bst->get_root();
-        while(temp->get_rightchild() != nullptr){
-            temp = temp->get_rightchild();
+        while(temp_bst->get_rightchild() != nullptr){
+            temp_bst = temp_bst->get_rightchild();
         }
-        p_bst->list(p_bst->get_root(),temp);
+        p_bst->list(p_bst->get_root(),temp_bst);
         
         print_operation_menu();
         cin >> choice;
@@ -356,7 +360,7 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         break;
 
     case '6':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_bst->finding(in_chromo,in_pos,in_altbase);
@@ -393,11 +397,17 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
     bool terminate = false;
     ifstream file;
     string line;
+    int chromo, pos;
+    char alt_base;
+    int in_chromo, in_pos;char in_altbase;
+    chrono::_V2::system_clock::time_point start_time,end_time;
+    chrono::milliseconds duration;
+    AVLNode* temp_avl = p_avltree->get_root();
 
     switch (choice)
     {
     case '1':
-        auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_gt);
         if (file.is_open()) {
@@ -405,8 +415,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
 
         while (getline(file, line)) {
             istringstream iss(line);
-            int chromo, pos;
-            char alt_base;
+            
 
             if (iss >> chromo >> pos >> alt_base) {
                 // Verileri kullan
@@ -416,8 +425,8 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         }
 
         file.close();
-        auto end_time = std::chrono::high_resolution_clock::now();  //end time
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
         cout<<"Ground truth data structure was created from file in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
@@ -431,7 +440,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
     
     case '2':
 
-        auto start_time = std::chrono::high_resolution_clock::now(); //starting time
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_predict);
         if (file.is_open()) {
@@ -439,8 +448,6 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
 
         while (getline(file, line)) {
             istringstream iss(line);
-            int chromo, pos;
-            char alt_base;
 
             if (iss >> chromo >> pos >> alt_base) {
                 // Verileri kullan
@@ -450,8 +457,8 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         }
 
         file.close();
-        auto end_time = std::chrono::high_resolution_clock::now();  //end time
-        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
         cout<<"Prediction data structure was created in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
@@ -464,7 +471,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         break;
 
     case '3':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_avltree->add_node(in_chromo,in_pos,in_altbase);
@@ -475,7 +482,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         break;
 
     case '4':
-        int in_chromo, in_pos;char in_altbase;
+
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_avltree->delete_node_main(in_chromo,in_pos,in_altbase);
@@ -486,11 +493,11 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         break;
 
     case '5':
-        AVLNode* temp = p_avltree->get_root();
-        while(temp-> right != nullptr){
-            temp = temp->right;
+        
+        while(temp_avl-> right != nullptr){
+            temp_avl = temp_avl->right;
         }
-        p_avltree->list(p_avltree->get_root(),temp);
+        p_avltree->list(p_avltree->get_root(),temp_avl);
         
         print_operation_menu();
         cin >> choice;
@@ -498,7 +505,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         break;
 
     case '6':
-        int in_chromo, in_pos;char in_altbase;
+        
         cout<<"Enter the CHROM POS and ALT BASE information with a space in between: ";
         cin>>in_chromo>>in_pos>>in_altbase;
         p_avltree->find_node(in_chromo,in_pos,in_altbase);

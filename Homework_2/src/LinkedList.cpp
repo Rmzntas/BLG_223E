@@ -8,6 +8,10 @@ Name: Ramazan Taş
 #include<vector>
 #include <chrono>
 
+LinkedList::LinkedList(){
+    
+}
+
 LinkedList::~LinkedList(){ // delete head and it will delete all linked list beacuse of destructor of Listnode will delete next
     delete head;
 }
