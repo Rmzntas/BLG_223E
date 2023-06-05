@@ -17,8 +17,8 @@ bool perform_operation(char, BSTree*, BSTree*);
 bool perform_operation(char, AVLTree*, AVLTree*);
 
 // I made global because I want to access in perform_operation functions
-string file_gt = "../gt.txt";
-string file_predict = "../predict.txt";
+string file_gt = "./gt.txt";
+string file_predict = "./predict.txt";
 
 int main()
 {
@@ -119,15 +119,25 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         file.open(file_gt);
         if (file.is_open()) {
         getline(file, line);  //skip first line
-        ListNode* temp = gt_list->get_head();
+        ListNode* temp_ll ;
+        ListNode* temp_head;
+        
 
+        getline(file,line);
+        istringstream iss1(line);
+        if(iss1>> chromo >> pos>>alt_base){
+            
+            temp_head = new ListNode(chromo,pos,alt_base);
+            gt_list->set_head(temp_head);
+        }
 
         while (getline(file, line)) {
             istringstream iss(line);
 
             if (iss >> chromo >> pos >> alt_base) {
-                temp = new ListNode(chromo,pos,alt_base);
-                temp = temp->get_next();    
+                temp_ll = new ListNode(chromo,pos,alt_base);
+                temp_head->set_next(temp_ll);
+                temp_head = temp_head->get_next();    
             } 
             else {}
         }
@@ -153,16 +163,26 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
 
         file.open(file_predict);
         if (file.is_open()) {
-        getline(file, line);  // skip first line
-        ListNode* temp = p_list->get_head();
+        getline(file, line);  //skip first line
+        ListNode* temp_ll ;
+        ListNode* temp_head;
+        
 
+        getline(file,line);
+        istringstream iss1(line);
+        if(iss1>> chromo >> pos>>alt_base){
+            
+            temp_head = new ListNode(chromo,pos,alt_base);
+            p_list->set_head(temp_head);
+        }
 
         while (getline(file, line)) {
             istringstream iss(line);
-        
+
             if (iss >> chromo >> pos >> alt_base) {
-                temp = new ListNode(chromo,pos,alt_base);
-                temp = temp->get_next();    
+                temp_ll = new ListNode(chromo,pos,alt_base);
+                temp_head->set_next(temp_ll);
+                temp_head = temp_head->get_next();    
             } 
             else {}
         }
@@ -170,7 +190,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         file.close();
         end_time = std::chrono::high_resolution_clock::now();  //end time
         duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
-        cout<<"Prediction data structure was created in "<<duration.count()<<" ms"<<std::endl; 
+        cout<<"Ground truth data structure was created from file in "<<duration.count()<<" ms"<<std::endl; 
         } 
         else {
             cout<< "file could not opened"<<endl;
@@ -233,6 +253,8 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
 
     case '0':
         terminate = true;
+        delete gt_list;
+        delete p_list;
         break;
 
     default:
@@ -381,6 +403,8 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
 
     case '0':
         terminate = true;
+        delete p_bst;
+        delete gt_bst;
         break;
 
     default:
@@ -526,6 +550,8 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
 
     case '0':
         terminate = true;
+        delete gt_avltree;
+        delete p_avltree;
         break;
 
     default:
