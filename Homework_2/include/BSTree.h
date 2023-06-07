@@ -27,6 +27,6 @@ class BSTree{
         void delete_node(int, int, char);       //4
         void list(BSTNode*,BSTNode*) const;     //5 ->root and last element as parametre
         void finding(int, int, char) const;     //6
-        void convert_to_vector(BSTNode*, std::vector<struct line_bst>*);
+        void convert_to_vector(BSTNode*, std::vector<struct line_bst>&);
         void true_counter(BSTree*) ;            //7
 };

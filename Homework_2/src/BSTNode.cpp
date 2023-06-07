@@ -15,27 +15,27 @@ BSTNode::~BSTNode(){
     delete right_child;
 }
 
-int BSTNode::get_chromo() const{
+int BSTNode::get_chromo() {
     return chromo;
 }
 
-int BSTNode::get_pos() const{
+int BSTNode::get_pos() {
     return pos;
 }
 
-char BSTNode::get_alt_base() const{
+char BSTNode::get_alt_base() {
     return alt_base;
 }
 
-BSTNode* BSTNode::get_parent()const{
+BSTNode* BSTNode::get_parent() {
     return parent;
 }
 
-BSTNode* BSTNode::get_leftchild()const{
+BSTNode* BSTNode::get_leftchild() {
     return left_child;
 }
 
-BSTNode* BSTNode::get_rightchild()const{
+BSTNode* BSTNode::get_rightchild() {
     return right_child;
 }
 

@@ -16,12 +16,12 @@ class BSTNode{
 
         BSTNode(int,int,char);
         ~BSTNode();
-        int get_chromo() const;
-        int get_pos() const;
-        char get_alt_base() const;
-        BSTNode* get_parent()const;
-        BSTNode* get_leftchild() const;
-        BSTNode* get_rightchild() const;
+        int get_chromo() ;
+        int get_pos() ;
+        char get_alt_base();
+        BSTNode* get_parent() ;
+        BSTNode* get_leftchild() ;
+        BSTNode* get_rightchild() ;
         void set_parent(BSTNode*);
         void set_leftchild(BSTNode*);
         void set_rightchild(BSTNode*);

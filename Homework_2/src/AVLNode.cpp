@@ -11,8 +11,7 @@ AVLNode::AVLNode(int chromo, int pos, char alt_base){
 }
 
 AVLNode::~AVLNode(){
-    delete left;
-    delete right;
+    
 }
 
 int AVLNode::get_chromo(){

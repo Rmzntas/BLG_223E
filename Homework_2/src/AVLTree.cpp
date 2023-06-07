@@ -4,15 +4,31 @@ Name: Ramazan Taş
 #include<iostream>
 #include "AVLTree.h"
 #include <chrono>
+#include<stack>
 
 AVLTree::AVLTree(){
 }
 
 AVLTree::~AVLTree(){
-    delete root;
+    delete_tree(root);
+}
+
+void AVLTree::delete_tree(AVLNode* &node){
+    if(node == nullptr){
+        return;
+    }
+
+    delete_tree(node->left);
+    delete_tree(node->right);
+
+    delete node;
 }
 
 AVLNode* AVLTree::get_root(){
+    return root;
+}
+
+AVLNode*& AVLTree::get_root2(){
     return root;
 }
 
@@ -28,24 +44,32 @@ int AVLTree::maximum(int a, int b){
     else return b;
 }
 
-void AVLTree::right_rotate(AVLNode* y) {
-    AVLNode* x = y->left;
+void AVLTree::right_rotate(AVLNode* &main) {
+    if (main == nullptr || main->left == nullptr) {
+        return;
+    }
+
+    AVLNode* x = main->left;
     AVLNode* T2 = x->right;
-    x->right = y;
-    y->left = T2;
-    y->height = maximum(cal_height(y->left), cal_height(y->right)) + 1;
-    x->height = maximum(cal_height(y->left), cal_height(y->right)) + 1;
-    y = x;
+    x->right = main;
+    main->left = T2;
+    main->height = maximum(cal_height(main->left), cal_height(main->right)) + 1;
+    x->height = maximum(cal_height(x->left), cal_height(x->right)) + 1;
+    main = x;
 }
 
-void AVLTree::left_rotate(AVLNode* x) {
-    AVLNode* y = x->right;
+void AVLTree::left_rotate(AVLNode* &main) {
+    if (main == nullptr || main->right == nullptr) {
+        return;
+    }
+
+    AVLNode* y = main->right;
     AVLNode* T2 = y->left;
-    y->left = x;
-    x->right = T2;
-    x->height = maximum(cal_height(y->left), cal_height(y->right)) + 1;
+    y->left = main;
+    main->right = T2;
+    main->height = maximum(cal_height(main->left), cal_height(main->right)) + 1;
     y->height = maximum(cal_height(y->left), cal_height(y->right)) + 1;
-    x = y;
+    main = y;
 }
 
 int AVLTree::get_balance(AVLNode* node) {
@@ -54,8 +78,8 @@ int AVLTree::get_balance(AVLNode* node) {
     return cal_height(node->left) - cal_height(node->right);
 }
 
-// Insert a node
-void AVLTree::insert_node(AVLNode* node, int chromo, int pos, char alt_base) {
+// Insert node
+void AVLTree::insert_node(AVLNode* &node, int chromo, int pos, char alt_base) {
     // Find the correct position and insert the node
     if (node == nullptr) {
         node = new AVLNode(chromo, pos, alt_base);
@@ -77,8 +101,9 @@ void AVLTree::insert_node(AVLNode* node, int chromo, int pos, char alt_base) {
         else {return;}
     }
 
-    // Update the balance factor of each node and
+    
     // balance the tree
+    
     node->height = maximum(cal_height(node->left), cal_height(node->right)) + 1;
     int balance_factor = get_balance(node);
     if (balance_factor > 1) {
@@ -134,73 +159,75 @@ AVLNode* AVLTree::node_minimum(AVLNode* node) {
 }
 
 // Delete a node
-void AVLTree::delete_node(AVLNode* root, int chromo, int pos, char alt_base, bool& is_deleted) {
+void AVLTree::delete_node(AVLNode* &node, int chromo, int pos, char alt_base, bool& is_deleted) {
     
     // Find the node and delete it
     
-    if (root == nullptr)
+    if (node == nullptr)
         return;
-    if (chromo < root->get_chromo())
-        delete_node(root->left, chromo, pos, alt_base, is_deleted);
-    else if (chromo > root->get_chromo())
-        delete_node(root->right, chromo, pos, alt_base, is_deleted);
+    if (chromo < node->get_chromo())
+        delete_node(node->left, chromo, pos, alt_base, is_deleted);
+    else if (chromo > node->get_chromo())
+        delete_node(node->right, chromo, pos, alt_base, is_deleted);
     else {
-        if (pos < root->get_pos())
-            delete_node(root->left, chromo, pos, alt_base, is_deleted);
-        else if (pos > root->get_pos())
-            delete_node(root->right, chromo, pos, alt_base, is_deleted);
-        else if (alt_base == root->get_alt_base()) {
-             if (root->left == NULL && root->right == NULL) {
-                delete root;
-                root = NULL;
+        if (pos < node->get_pos())
+            delete_node(node->left, chromo, pos, alt_base, is_deleted);
+        else if (pos > node->get_pos())
+            delete_node(node->right, chromo, pos, alt_base, is_deleted);
+        else if (alt_base == node->get_alt_base()) {
+             if (node->left == nullptr && node->right == nullptr) {
+                delete node;
+                node = nullptr;
                 is_deleted = true;
             }
-            else if (root->left == NULL) {
-                AVLNode* temp = root->right;
-                *root = *temp;
+            else if (node->left == nullptr) {
+                AVLNode* temp = node;
+                node = node->right;
+                //temp->right = nullptr;
                 delete temp;
                 is_deleted = true;
             }
-            else if (root->right == NULL) {
-                AVLNode* temp = root->left;
-                *root = *temp;
+            else if (node->right == nullptr) {
+                AVLNode* temp = node;
+                node = node->left;
+                //temp->left = nullptr;
                 delete temp;
                 is_deleted = true;
             }
             else {
-                AVLNode* temp = node_minimum(root->right);
+                AVLNode* temp = node_minimum(node->right);
                 
-                root->set_chromo(temp->get_chromo());
-                root->set_pos(temp->get_pos());
-                root->set_alt_base(temp->get_alt_base());
-                delete_node(root->right, temp->get_chromo(), temp->get_pos(), temp->get_alt_base(), is_deleted);
+                node->set_chromo(temp->get_chromo());
+                node->set_pos(temp->get_pos());
+                node->set_alt_base(temp->get_alt_base());
+                delete_node(node->right, temp->get_chromo(), temp->get_pos(), temp->get_alt_base(), is_deleted);
             }
         }
     }
 
-    if (root == nullptr)
+    if (node == nullptr)
         return;
 
     // Update the balance factor of each node and
     // balance the tree
-    root->height = maximum(cal_height(root->left), cal_height(root->right)) + 1;
-    int balanceFactor = get_balance(root);
+    node ->height = maximum(cal_height(node->left), cal_height(node->right)) + 1;
+    int balanceFactor = get_balance(node);
     if (balanceFactor > 1) {
-        if (get_balance(root->left) >= 0) {
-            right_rotate(root);
+        if (get_balance(node->left) >= 0) {
+            right_rotate(node);
         }
         else {
-            left_rotate(root->left);
-            right_rotate(root);
+            left_rotate(node->left);
+            right_rotate(node);
         }
     }
     if (balanceFactor < -1) {
-        if (get_balance(root->right) <= 0) {
-            left_rotate(root);
+        if (get_balance(node->right) <= 0) {
+            left_rotate(node);
         }
         else {
-            right_rotate(root->right);
-            left_rotate(root);
+            right_rotate(node->right);
+            left_rotate(node);
         }
     }
 }
@@ -222,18 +249,18 @@ void AVLTree::delete_node_main(int chromo, int pos, char alt_base){
     }
 }
 
-void AVLTree::list(AVLNode* root,AVLNode* last) const{  // inorder -> left - root - right
-    if(root == nullptr){
+void AVLTree::list(AVLNode* node,AVLNode* last) const{  // inorder -> left - root - right
+    if(node == nullptr){
         return; 
     }
-    list(root->left,last);
-    if(root == last){
-            std::cout<<root->get_chromo()<<" "<<root->get_pos()<<" "<<root->get_alt_base()<<std::endl;
+    list(node->left,last);
+    if(node == last){
+            std::cout<<node->get_chromo()<<" "<<node->get_pos()<<" "<<node->get_alt_base()<<std::endl;
     }
     else{
-        std::cout<<root->get_chromo()<<" "<<root->get_pos()<<" "<<root->get_alt_base()<<",";
+        std::cout<<node->get_chromo()<<" "<<node->get_pos()<<" "<<node->get_alt_base()<<",";
     }
-    list(root->right,last);
+    list(node->right,last);
 }
 
 void AVLTree::find_node(int chromo, int pos, char alt_base) const{
@@ -291,13 +318,29 @@ void AVLTree::convert_to_vector(AVLNode* root, std::vector<struct line>& vec){
     if(root == nullptr){
         return;
     }
-    convert_to_vector(root->left,vec);
-    line data;
-    data.chromo = root->get_chromo();
-    data.pos = root->get_pos();
-    data.alt_base = root->get_alt_base();
-    vec.push_back(data);
-    convert_to_vector(root->right,vec);
+    
+    
+    std::stack<AVLNode*> nodeStack;
+    AVLNode* current = root;
+
+    while (current != nullptr || !nodeStack.empty()) {
+        while (current != nullptr) {
+            nodeStack.push(current);
+            current = current->left;
+        }
+
+        current = nodeStack.top();
+        nodeStack.pop();
+
+        line data;
+        data.chromo = current->get_chromo();
+        data.pos = current->get_pos();
+        data.alt_base = current->get_alt_base();
+        vec.push_back(data);
+
+        current = current->right;
+    }
+    
 }
 
 void AVLTree::true_counter(AVLTree* gt) {

@@ -4,6 +4,7 @@ Name: Ramazan Taş
 
 #include"BSTree.h"
 #include <chrono>
+#include <stack>
 
 BSTree::BSTree(){
 
@@ -440,7 +441,7 @@ void BSTree::finding(int chromo, int pos, char alt_base) const{
     }
 }
 
-void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>* vec){
+/*void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>& vec){
     if(root == nullptr){
         return;
     }
@@ -449,9 +450,38 @@ void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>* vec)
     data.chromo = root->get_chromo();
     data.pos = root->get_pos();
     data.alt_base = root->get_alt_base();
-    vec->push_back(data);
+    vec.push_back(data);
     convert_to_vector(root->get_rightchild(),vec);
 }
+*/
+
+void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>& vec) {
+    if (root == nullptr) {
+        return;
+    }
+
+    std::stack<BSTNode*> nodeStack;
+    BSTNode* current = root;
+
+    while (current != nullptr || !nodeStack.empty()) {
+        while (current != nullptr) {
+            nodeStack.push(current);
+            current = current->get_leftchild();
+        }
+
+        current = nodeStack.top();
+        nodeStack.pop();
+
+        line_bst data;
+        data.chromo = current->get_chromo();
+        data.pos = current->get_pos();
+        data.alt_base = current->get_alt_base();
+        vec.push_back(data);
+
+        current = current->get_rightchild();
+    }
+}
+
 
 void BSTree::true_counter(BSTree* gt) {
 
@@ -460,8 +490,8 @@ void BSTree::true_counter(BSTree* gt) {
 
     std:: vector <line_bst> first, second;
     
-    convert_to_vector(this->root, &first);
-    convert_to_vector(gt->get_root(), &second);
+    convert_to_vector(this->root, first);
+    convert_to_vector(gt->get_root(), second);
 
     for (const auto& data1 : first) {
         for (const auto& data2 : second) {

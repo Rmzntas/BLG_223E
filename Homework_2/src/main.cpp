@@ -10,6 +10,9 @@
 
 using namespace std;
 
+//g++ -Wall -Werror src/main.cpp src/ListNode.cpp src/LinkedList.cpp src/BSTree.cpp src/BSTNode.cpp src/AVLTree.cpp src/AVLNode.cpp -I include -o main
+//bin/main
+
 void print_ds_menu();
 void print_operation_menu();
 bool perform_operation(char, LinkedList*, LinkedList*);
@@ -445,7 +448,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
 
             if (iss >> chromo >> pos >> alt_base) {
                 // Verileri kullan
-                gt_avltree->insert_node(gt_avltree->get_root(),chromo,pos,alt_base);
+                gt_avltree->insert_node(gt_avltree->get_root2(),chromo,pos,alt_base);
             } 
             else {}
         }
@@ -477,7 +480,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
 
             if (iss >> chromo >> pos >> alt_base) {
                 // Verileri kullan
-                p_avltree->insert_node(p_avltree->get_root(),chromo,pos,alt_base);
+                p_avltree->insert_node(p_avltree->get_root2(),chromo,pos,alt_base);
             } 
             else {}
         }

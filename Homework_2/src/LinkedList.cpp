@@ -2,8 +2,6 @@
 Name: Ramazan Taş
 */
 
-// corono ile zaman eklemesi yapılmadı
-
 #include"LinkedList.h"
 #include<vector>
 #include <chrono>
@@ -140,7 +138,7 @@ void LinkedList::true_counter(LinkedList* gt) const{
     ListNode* temp_1 = head;
     ListNode* temp_2 = gt->get_head();
 
-    while(temp_1 != nullptr){
+    while(temp_1 != nullptr){  
         line data;
         data.chromo = temp_1->get_chromo();
         data.pos = temp_1->get_pos();
@@ -154,7 +152,7 @@ void LinkedList::true_counter(LinkedList* gt) const{
         data.chromo = temp_2->get_chromo();
         data.pos = temp_2->get_pos();
         data.alt_base = temp_2->get_alt_base();
-        first.push_back(data);
+        second.push_back(data);
         temp_2 = temp_2->get_next();
     }
 
