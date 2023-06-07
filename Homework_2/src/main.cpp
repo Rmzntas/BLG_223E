@@ -1,3 +1,10 @@
+/* @Author
+Name: Ramazan Taş
+*/
+
+//g++ -Wall -Werror src/main.cpp src/ListNode.cpp src/LinkedList.cpp src/BSTree.cpp src/BSTNode.cpp src/AVLTree.cpp src/AVLNode.cpp -I include -o bin/main
+//bin/main
+
 #include <iostream>
 #include <vector>
 #include "LinkedList.h"
@@ -10,9 +17,6 @@
 
 using namespace std;
 
-//g++ -Wall -Werror src/main.cpp src/ListNode.cpp src/LinkedList.cpp src/BSTree.cpp src/BSTNode.cpp src/AVLTree.cpp src/AVLNode.cpp -I include -o main
-//bin/main
-
 void print_ds_menu();
 void print_operation_menu();
 bool perform_operation(char, LinkedList*, LinkedList*);
@@ -22,6 +26,10 @@ bool perform_operation(char, AVLTree*, AVLTree*);
 // I made global because I want to access in perform_operation functions
 string file_gt = "./gt.txt";
 string file_predict = "./predict.txt";
+
+//for not add files 2 or more times
+bool gt_flag = false;           
+bool predic_flag = false;       
 
 int main()
 {
@@ -117,6 +125,11 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
     {
     case '1':
 
+        if(gt_flag){
+            cout<<"That data structer has already created !!"<<endl;
+            break;
+        }
+
         start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_gt);
@@ -154,6 +167,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
             cout<< "file could not opened"<<endl;
         } // file could not be opened
         
+        gt_flag = true;
 
         print_operation_menu();
         cin >> choice;
@@ -161,6 +175,11 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
     
     case '2':
+
+        if(predic_flag){
+            cout<<"That data structer has already created !!"<<endl;
+            break;
+        }
 
         start_time = std::chrono::high_resolution_clock::now(); //starting time
 
@@ -199,6 +218,7 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
             cout<< "file could not opened"<<endl;
         } // file could not be opened
         
+        predic_flag = true;
 
         print_operation_menu();
         cin >> choice;
@@ -228,7 +248,14 @@ bool perform_operation(char choice, LinkedList* p_list, LinkedList* gt_list){
         break;
 
     case '5':
+        
+        start_time =  std::chrono::high_resolution_clock::now(); //starting time
+        
         p_list->list();
+        
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        //cout<<"Listing with Linked List structure: "<<duration.count()<<" ms"<<std::endl;
         
         print_operation_menu();
         cin >> choice;
@@ -287,6 +314,11 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
     {
     case '1':
 
+        if(gt_flag){
+            cout<<"That data structer has already created !!"<<endl;
+            break;
+        }
+
         start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_gt);
@@ -314,12 +346,19 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         } // file could not be opened
         
         
+        gt_flag = true;
+
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_bst, gt_bst);
         break;
     
     case '2':
+
+        if(predic_flag ){
+            cout<<"That data structer has already created !!"<<endl;
+            break;
+        }
 
         start_time = std::chrono::high_resolution_clock::now(); //starting time
 
@@ -346,6 +385,8 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
             cout<< "file could not opened"<<endl;
         } // file could not be opened
         
+        predic_flag = true;
+
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_bst, gt_bst);
@@ -374,12 +415,19 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         break;
 
     case '5':
+            
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
+
         temp_bst = p_bst->get_root();
         while(temp_bst->get_rightchild() != nullptr){
             temp_bst = temp_bst->get_rightchild();
         }
         p_bst->list(p_bst->get_root(),temp_bst);
         
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        //cout<<"Listing with Binary Search Tree structure: "<<duration.count()<<" ms"<<std::endl;
+
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_bst, gt_bst);
@@ -436,6 +484,12 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
     switch (choice)
     {
     case '1':
+
+        if(gt_flag ){
+            cout<<"That data structer has already created !!"<<endl;
+            break;
+        }
+
         start_time = std::chrono::high_resolution_clock::now(); //starting time
 
         file.open(file_gt);
@@ -462,12 +516,19 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
             cout<< "file could not opened"<<endl;
         } // file could not be opened
         
+        gt_flag = true;
+
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_avltree, gt_avltree);
         break;
     
     case '2':
+
+        if(predic_flag ){
+            cout<<"That data structer has already created !!"<<endl;
+            break;
+        }
 
         start_time = std::chrono::high_resolution_clock::now(); //starting time
 
@@ -493,6 +554,8 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         else {
             cout<< "file could not opened"<<endl;
         } // file could not be opened
+
+        predic_flag = true;
 
         print_operation_menu();
         cin >> choice;
@@ -522,11 +585,18 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         break;
 
     case '5':
+
+        start_time = std::chrono::high_resolution_clock::now(); //starting time
+
         temp_avl = p_avltree->get_root();
         while(temp_avl-> right != nullptr){
             temp_avl = temp_avl->right;
         }
         p_avltree->list(p_avltree->get_root(),temp_avl);
+
+        end_time = std::chrono::high_resolution_clock::now();  //end time
+        duration = std::chrono::duration_cast<std::chrono::milliseconds>(end_time - start_time);
+        //cout<<"Listing with AVL Tree structure: "<<duration.count()<<" ms"<<std::endl;
         
         print_operation_menu();
         cin >> choice;
