@@ -21,5 +21,5 @@ class AVLNode{
         
         AVLNode* left {nullptr};
         AVLNode* right {nullptr};
-        int height;
+        int height {1};
 };

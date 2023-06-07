@@ -39,7 +39,7 @@ void BSTree::insert_node(int chromo, int pos, char alt_base){
                     break;
                 }
                 else{
-                    temp->get_leftchild();
+                    temp= temp->get_leftchild();
                 }
             }
             else if(new_node->get_chromo() > temp->get_chromo()){
@@ -59,6 +59,9 @@ void BSTree::insert_node(int chromo, int pos, char alt_base){
                         new_node->set_parent(temp);
                         break;
                     }
+                    else{
+                        temp = temp->get_leftchild();
+                    }
                 }
                 else if(new_node->get_pos() > temp->get_pos()){
                     if(temp->get_rightchild() == nullptr){
@@ -70,7 +73,7 @@ void BSTree::insert_node(int chromo, int pos, char alt_base){
                         temp = temp->get_rightchild();
                     }
                 }
-                else{}//chromo and pos are equal -> X
+                else{break;}//chromo and pos are equal -> X
             }
         }
     }
@@ -97,7 +100,7 @@ void BSTree::add_node(int chromo, int pos, char alt_base){
                     break;
                 }
                 else{
-                    temp->get_leftchild();
+                    temp = temp->get_leftchild();
                 }
             }
             else if(new_node->get_chromo() > temp->get_chromo()){
@@ -117,6 +120,9 @@ void BSTree::add_node(int chromo, int pos, char alt_base){
                         new_node->set_parent(temp);
                         break;
                     }
+                    else{
+                        temp = temp->get_leftchild();
+                    }
                 }
                 else if(new_node->get_pos() > temp->get_pos()){
                     if(temp->get_rightchild() == nullptr){
@@ -128,7 +134,7 @@ void BSTree::add_node(int chromo, int pos, char alt_base){
                         temp = temp->get_rightchild();
                     }
                 }
-                else{}//chromo and pos are equal -> X
+                else{break;}//chromo and pos are equal -> X
             }
         }
     }
@@ -314,7 +320,6 @@ void BSTree::delete_node(int chromo, int pos, char alt_base){
         else{
             // find min value of right tree and replace with deleted node
             BSTNode* min = temp;
-            BSTNode* temp_parent = temp->get_parent();
             
             min = min->get_rightchild();
             
@@ -435,7 +440,7 @@ void BSTree::finding(int chromo, int pos, char alt_base) const{
     }
 }
 
-void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>& vec){
+void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>* vec){
     if(root == nullptr){
         return;
     }
@@ -444,7 +449,7 @@ void BSTree::convert_to_vector(BSTNode* root, std::vector<struct line_bst>& vec)
     data.chromo = root->get_chromo();
     data.pos = root->get_pos();
     data.alt_base = root->get_alt_base();
-    vec.push_back(data);
+    vec->push_back(data);
     convert_to_vector(root->get_rightchild(),vec);
 }
 
@@ -453,10 +458,10 @@ void BSTree::true_counter(BSTree* gt) {
     auto start_time = std::chrono::high_resolution_clock::now(); //starting time
     int counter{};
 
-    std:: vector <line_bst> first,second;
+    std:: vector <line_bst> first, second;
     
-    convert_to_vector(this->root, first);
-    convert_to_vector(gt->get_root(), second);
+    convert_to_vector(this->root, &first);
+    convert_to_vector(gt->get_root(), &second);
 
     for (const auto& data1 : first) {
         for (const auto& data2 : second) {

@@ -276,7 +276,8 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
     int in_chromo, in_pos;char in_altbase;
     chrono::_V2::system_clock::time_point start_time,end_time;
     chrono::milliseconds duration;
-    BSTNode* temp_bst = p_bst->get_root();
+    BSTNode* temp_bst;
+    
 
 
     switch (choice)
@@ -342,7 +343,6 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
             cout<< "file could not opened"<<endl;
         } // file could not be opened
         
-
         print_operation_menu();
         cin >> choice;
         terminate = perform_operation(choice, p_bst, gt_bst);
@@ -371,6 +371,7 @@ bool perform_operation(char choice, BSTree* p_bst, BSTree* gt_bst){
         break;
 
     case '5':
+        temp_bst = p_bst->get_root();
         while(temp_bst->get_rightchild() != nullptr){
             temp_bst = temp_bst->get_rightchild();
         }
@@ -426,7 +427,8 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
     int in_chromo, in_pos;char in_altbase;
     chrono::_V2::system_clock::time_point start_time,end_time;
     chrono::milliseconds duration;
-    AVLNode* temp_avl = p_avltree->get_root();
+    AVLNode* temp_avl ;
+
 
     switch (choice)
     {
@@ -517,7 +519,7 @@ bool perform_operation(char choice, AVLTree* p_avltree, AVLTree* gt_avltree){
         break;
 
     case '5':
-        
+        temp_avl = p_avltree->get_root();
         while(temp_avl-> right != nullptr){
             temp_avl = temp_avl->right;
         }

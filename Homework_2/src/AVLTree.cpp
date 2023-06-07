@@ -54,17 +54,11 @@ int AVLTree::get_balance(AVLNode* node) {
     return cal_height(node->left) - cal_height(node->right);
 }
 
-AVLNode* AVLTree::new_node(int chromo, int pos, char alt_base ) {
-    AVLNode* node = new AVLNode(chromo,pos,alt_base);
-    node->height = 1;
-    return (node);
-}
-
 // Insert a node
 void AVLTree::insert_node(AVLNode* node, int chromo, int pos, char alt_base) {
     // Find the correct position and insert the node
     if (node == nullptr) {
-        node = new_node(chromo,pos,alt_base);
+        node = new AVLNode(chromo, pos, alt_base);
         return;
     }
     if (chromo < node->get_chromo()){
